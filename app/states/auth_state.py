@@ -1,7 +1,8 @@
 import reflex as rx
+from reflex_google_auth import GoogleAuthState
 
 
-class AuthState(rx.State):
+class AuthState(GoogleAuthState):
     users: dict = {"admin@reflex.com": "password123"}
     in_session: bool = False
 

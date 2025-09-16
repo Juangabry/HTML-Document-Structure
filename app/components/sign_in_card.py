@@ -1,5 +1,6 @@
 import reflex as rx
 from app.states.auth_state import AuthState
+from reflex_google_auth import google_login
 
 
 def sign_in_card():
@@ -14,6 +15,23 @@ def sign_in_card():
                 class_name="text-sm text-gray-500 font-medium",
             ),
             class_name="flex flex-col",
+        ),
+        rx.el.div(
+            google_login(),
+            rx.el.button(
+                rx.icon("linkedin", class_name="h-4 w-4"),
+                "Sign in with LinkedIn",
+                class_name="w-full inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors text-white shadow bg-[#0077B5] hover:bg-[#005E94] h-9 px-4 py-2",
+            ),
+            class_name="grid grid-cols-2 gap-4",
+        ),
+        rx.el.div(
+            rx.el.hr(class_name="shrink-0 bg-gray-200 h-[1px] w-full"),
+            rx.el.span(
+                "OR CONTINUE WITH",
+                class_name="px-2 text-xs text-gray-500 uppercase font-medium bg-white",
+            ),
+            class_name="relative flex justify-center text-xs uppercase",
         ),
         rx.el.form(
             rx.el.div(

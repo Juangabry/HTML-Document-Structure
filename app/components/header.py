@@ -33,8 +33,13 @@ def header() -> rx.Component:
             ),
             rx.el.div(
                 rx.el.a(
-                    "Registro / Inicio de sesion",
+                    "Sign In",
                     href="/sign-in",
+                    class_name="text-sm font-medium text-white hover:underline underline-offset-4",
+                ),
+                rx.el.a(
+                    "Sign Up",
+                    href="/sign-up",
                     class_name="text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md",
                 ),
                 rx.el.button(
@@ -68,8 +73,14 @@ def header() -> rx.Component:
                     on_click=HeaderState.toggle_menu,
                 ),
                 rx.el.a(
-                    "Registro / Inicio de sesion",
+                    "Sign In",
                     href="/sign-in",
+                    class_name="block py-2 px-4 text-sm text-white hover:bg-blue-800",
+                    on_click=HeaderState.toggle_menu,
+                ),
+                rx.el.a(
+                    "Sign Up",
+                    href="/sign-up",
                     class_name="block py-2 px-4 text-sm text-white hover:bg-blue-800",
                     on_click=HeaderState.toggle_menu,
                 ),
