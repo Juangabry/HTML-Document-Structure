@@ -1,4 +1,5 @@
 import reflex as rx
+from app.states.auth_state import AuthState
 
 
 def payment_form() -> rx.Component:
@@ -44,6 +45,8 @@ def payment_form() -> rx.Component:
                 class_name="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors",
                 type="submit",
             ),
+            on_submit=AuthState.handle_payment,
+            reset_on_submit=True,
         ),
         class_name="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md border border-gray-200",
     )
@@ -53,4 +56,5 @@ def payment() -> rx.Component:
     return rx.el.div(
         payment_form(),
         class_name="min-h-screen bg-gray-100 flex items-center justify-center",
+        on_mount=AuthState.check_session,
     )

@@ -5,9 +5,12 @@ from app.components.about import about
 from app.components.services import services
 from app.components.subscriptions import subscriptions
 from app.components.footer import footer
+from app.components.ad_sections import ad_sections
 from app.pages.sign_in import sign_in
 from app.pages.sign_up import sign_up
 from app.pages.payment import payment
+from app.pages.member_space import member_space
+from app.states.auth_state import AuthState
 
 
 def index() -> rx.Component:
@@ -17,6 +20,7 @@ def index() -> rx.Component:
         hero(),
         about(),
         services(),
+        ad_sections(),
         subscriptions(),
         footer(),
         class_name="bg-gray-50 text-gray-900 font-['Inter']",
@@ -38,3 +42,4 @@ app.add_page(index, title="Landing Page")
 app.add_page(sign_in, route="/sign-in")
 app.add_page(sign_up, route="/sign-up")
 app.add_page(payment, route="/payment")
+app.add_page(member_space, route="/member-space", on_load=AuthState.check_subscription)
