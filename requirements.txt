@@ -2,3 +2,5 @@
 reflex==0.8.10
 reflex-enterprise
 reflex-google-auth
+pandas
+numpy

@@ -25,10 +25,17 @@ def header() -> rx.Component:
                 ),
                 rx.cond(
                     AuthState.is_subscribed,
-                    rx.el.a(
-                        "Members Area",
-                        href="/member-space",
-                        class_name="text-sm font-medium text-white hover:underline underline-offset-4",
+                    rx.fragment(
+                        rx.el.a(
+                            "Members Area",
+                            href="/member-space",
+                            class_name="text-sm font-medium text-white hover:underline underline-offset-4",
+                        ),
+                        rx.el.a(
+                            "Analysis",
+                            href="/analysis",
+                            class_name="text-sm font-medium text-white hover:underline underline-offset-4",
+                        ),
                     ),
                     rx.fragment(""),
                 ),
@@ -87,11 +94,19 @@ def header() -> rx.Component:
                 ),
                 rx.cond(
                     AuthState.is_subscribed,
-                    rx.el.a(
-                        "Members Area",
-                        href="/member-space",
-                        class_name="block py-2 px-4 text-sm text-white hover:bg-blue-800",
-                        on_click=HeaderState.toggle_menu,
+                    rx.fragment(
+                        rx.el.a(
+                            "Members Area",
+                            href="/member-space",
+                            class_name="block py-2 px-4 text-sm text-white hover:bg-blue-800",
+                            on_click=HeaderState.toggle_menu,
+                        ),
+                        rx.el.a(
+                            "Analysis",
+                            href="/analysis",
+                            class_name="block py-2 px-4 text-sm text-white hover:bg-blue-800",
+                            on_click=HeaderState.toggle_menu,
+                        ),
                     ),
                     rx.fragment(""),
                 ),

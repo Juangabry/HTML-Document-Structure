@@ -13,10 +13,18 @@ def member_space() -> rx.Component:
                 "Thank you for subscribing. Here you will find exclusive content.",
                 class_name="mt-4 text-lg text-gray-700",
             ),
-            rx.el.a(
-                "Go back to Home",
-                href="/",
-                class_name="mt-8 inline-block bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors",
+            rx.el.div(
+                rx.el.a(
+                    "Go to Analysis",
+                    href="/analysis",
+                    class_name="mt-8 inline-block bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition-colors",
+                ),
+                rx.el.a(
+                    "Go back to Home",
+                    href="/",
+                    class_name="mt-8 inline-block bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors",
+                ),
+                class_name="flex gap-4",
             ),
             class_name="text-center bg-white p-12 rounded-lg shadow-md border border-gray-200",
         ),

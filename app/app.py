@@ -10,6 +10,7 @@ from app.pages.sign_in import sign_in
 from app.pages.sign_up import sign_up
 from app.pages.payment import payment
 from app.pages.member_space import member_space
+from app.pages.analysis import analysis
 from app.states.auth_state import AuthState
 
 
@@ -45,5 +46,10 @@ app.add_page(payment, route="/payment", on_load=AuthState.check_session)
 app.add_page(
     member_space,
     route="/member-space",
+    on_load=[AuthState.check_session, AuthState.check_subscription],
+)
+app.add_page(
+    analysis,
+    route="/analysis",
     on_load=[AuthState.check_session, AuthState.check_subscription],
 )
