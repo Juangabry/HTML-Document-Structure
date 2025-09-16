@@ -43,5 +43,5 @@ def services() -> rx.Component:
             class_name="container mx-auto text-center",
         ),
         id="services",
-        class_name="w-full py-12 md:py-24 lg:py-32 bg-white",
+        class_name="w-full py-12 md:py-24 lg:py-32 bg-blue-50",
     )

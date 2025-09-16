@@ -9,32 +9,25 @@ class AuthState(GoogleAuthState):
     in_session: bool = False
     current_user_email: str = ""
 
-    @rx.var
-    def is_subscribed(self) -> bool:
-        if not self.in_session or not self.current_user_email:
-            return False
-        return self.users.get(self.current_user_email, {}).get("subscribed", False)
-
     @rx.event
     def sign_up(self, form_data: dict):
-        email = form_data["email"]
-        if email in self.users:
+        if form_data["email"] in self.users:
             yield rx.toast.error("Email already in use")
         else:
-            self.users[email] = {"password": form_data["password"], "subscribed": False}
+            self.users[form_data["email"]] = {
+                "password": form_data["password"],
+                "subscribed": False,
+            }
             self.in_session = True
-            self.current_user_email = email
+            self.current_user_email = form_data["email"]
             return rx.redirect("/")
 
     @rx.event
     def sign_in(self, form_data: dict):
-        email = form_data["email"]
-        if (
-            email in self.users
-            and self.users[email]["password"] == form_data["password"]
-        ):
+        user_data = self.users.get(form_data["email"])
+        if user_data and user_data["password"] == form_data["password"]:
             self.in_session = True
-            self.current_user_email = email
+            self.current_user_email = form_data["email"]
             return rx.redirect("/")
         else:
             self.in_session = False
@@ -51,14 +44,20 @@ class AuthState(GoogleAuthState):
         if not self.in_session:
             return rx.redirect("/sign-in")
 
+    @rx.var
+    def is_subscribed(self) -> bool:
+        if self.in_session and self.current_user_email:
+            user = self.users.get(self.current_user_email)
+            if user:
+                return user.get("subscribed", False)
+        return False
+
     @rx.event
-    def handle_payment(self):
+    def subscribe(self):
         if self.in_session and self.current_user_email:
             self.users[self.current_user_email]["subscribed"] = True
-            yield rx.toast.success("Subscription successful! Welcome to the club.")
             return rx.redirect("/member-space")
         else:
-            yield rx.toast.error("You must be logged in to subscribe.")
             return rx.redirect("/sign-in")
 
     @rx.event
@@ -66,4 +65,5 @@ class AuthState(GoogleAuthState):
         if not self.in_session:
             return rx.redirect("/sign-in")
         if not self.is_subscribed:
-            return rx.redirect("/")
+            yield rx.toast.error("You need a subscription to access this page.")
+            return rx.redirect("/payment")
