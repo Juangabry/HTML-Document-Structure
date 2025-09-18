@@ -44,6 +44,12 @@ class VirtualAssistantState(rx.State):
             return "We have Basic, Medium, and Complete plans. You can see the details in the pricing section."
         elif "start" in lower_message or "tutorial" in lower_message:
             return "To get started, you can explore our tutorial page. It has videos and guides to help you out."
+        elif (
+            "miembros" in lower_message
+            or "formulario" in lower_message
+            or "análisis" in lower_message
+        ):
+            return "Claro, puedo ayudarte con eso. ¿Qué necesitas saber sobre la sección de miembros, el formulario o los análisis?"
         elif "hello" in lower_message or "hi" in lower_message:
             return "Hello there! How may I assist you?"
         else:

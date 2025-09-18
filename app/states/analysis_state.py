@@ -1,180 +1,138 @@
 import reflex as rx
 from typing import TypedDict, Optional
+import random
+from collections import Counter
 
 
-class Task(TypedDict):
+class SurveyResponse(TypedDict):
     id: int
-    project_id: int
-    name: str
-    status: str
-
-
-class Project(TypedDict):
-    id: int
-    name: str
-    description: str
+    age: int
+    gender: str
+    marital_status: str
+    position: str
+    seniority: int
+    has_consumed: bool
+    substances: list[str]
+    age_of_first_use: Optional[int]
+    frequency: Optional[str]
+    consumed_at_work: Optional[bool]
+    absenteeism: Optional[bool]
+    conflicts: Optional[bool]
+    affects_performance: Optional[bool]
+    willing_to_participate: Optional[bool]
 
 
 class AnalysisState(rx.State):
-    projects: list[Project] = [
-        {
-            "id": 1,
-            "name": "Quantum Leap Engine",
-            "description": "Develop a faster-than-light propulsion system.",
-        },
-        {
-            "id": 2,
-            "name": "Project Chimera",
-            "description": "Genetic modification for enhanced adaptability.",
-        },
-        {
-            "id": 3,
-            "name": "Aether Network",
-            "description": "Establish a global psychic communication network.",
-        },
-        {
-            "id": 4,
-            "name": "Chronos Initiative",
-            "description": "Investigate temporal displacement phenomena.",
-        },
-    ]
-    tasks: dict[int, list[Task]] = {
-        1: [
-            {
-                "id": 101,
-                "project_id": 1,
-                "name": "Stabilize antimatter core",
-                "status": "Completed",
-            },
-            {
-                "id": 102,
-                "project_id": 1,
-                "name": "Calibrate warp field",
-                "status": "In Progress",
-            },
-            {
-                "id": 103,
-                "project_id": 1,
-                "name": "Design navigation AI",
-                "status": "Pending",
-            },
-            {
-                "id": 104,
-                "project_id": 1,
-                "name": "Test FTL jump sequence",
-                "status": "Pending",
-            },
-        ],
-        2: [
-            {
-                "id": 201,
-                "project_id": 2,
-                "name": "Sequence target genome",
-                "status": "Completed",
-            },
-            {
-                "id": 202,
-                "project_id": 2,
-                "name": "Develop retroviral vector",
-                "status": "In Progress",
-            },
-            {
-                "id": 203,
-                "project_id": 2,
-                "name": "Conduct simulation trials",
-                "status": "In Progress",
-            },
-            {
-                "id": 204,
-                "project_id": 2,
-                "name": "Initiate controlled mutation",
-                "status": "Pending",
-            },
-        ],
-        3: [
-            {
-                "id": 301,
-                "project_id": 3,
-                "name": "Map global ley lines",
-                "status": "Completed",
-            },
-            {
-                "id": 302,
-                "project_id": 3,
-                "name": "Construct psychic amplifiers",
-                "status": "In Progress",
-            },
-            {
-                "id": 303,
-                "project_id": 3,
-                "name": "Establish first node connection",
-                "status": "Pending",
-            },
-        ],
-        4: [],
-    }
-    selected_project_id: Optional[int] = None
+    survey_data: list[SurveyResponse] = []
     chart_type: str = "bar"
 
+    def _generate_mock_data(self):
+        if self.survey_data:
+            return
+        positions = ["Engineer", "Designer", "Manager", "Analyst", "HR"]
+        genders = ["Male", "Female"]
+        marital_statuses = ["Single", "Married", "Divorced"]
+        substances_list = ["alcohol", "tobacco", "cannabis", "cocaine", "amphetamines"]
+        frequencies = ["monthly", "weekly", "daily"]
+        data = []
+        for i in range(1, 51):
+            has_consumed = random.choice([True, False])
+            age_of_first_use = random.randint(15, 25) if has_consumed else None
+            entry = {
+                "id": i,
+                "age": random.randint(20, 60),
+                "gender": random.choice(genders),
+                "marital_status": random.choice(marital_statuses),
+                "position": random.choice(positions),
+                "seniority": random.randint(1, 20),
+                "has_consumed": has_consumed,
+                "substances": random.sample(substances_list, k=random.randint(0, 3))
+                if has_consumed
+                else [],
+                "age_of_first_use": age_of_first_use,
+                "frequency": random.choice(frequencies) if has_consumed else None,
+                "consumed_at_work": random.choice([True, False])
+                if has_consumed
+                else None,
+                "absenteeism": random.choice([True, False]) if has_consumed else None,
+                "conflicts": random.choice([True, False]) if has_consumed else None,
+                "affects_performance": random.choice([True, False])
+                if has_consumed
+                else None,
+                "willing_to_participate": random.choice([True, False])
+                if has_consumed
+                else None,
+            }
+            data.append(entry)
+        self.survey_data = data
+
     @rx.event
-    def select_project(self, project_id: int):
-        if self.selected_project_id == project_id:
-            self.selected_project_id = None
-        else:
-            self.selected_project_id = project_id
+    def on_load(self):
+        self._generate_mock_data()
 
     @rx.event
     def set_chart_type(self, chart_type: str):
         self.chart_type = chart_type
 
     @rx.var
-    def selected_project(self) -> Optional[Project]:
-        if self.selected_project_id is None:
-            return None
-        for project in self.projects:
-            if project["id"] == self.selected_project_id:
-                return project
-        return None
-
-    @rx.var
-    def selected_project_tasks(self) -> list[Task]:
-        if self.selected_project_id is None:
+    def consumers_vs_non_consumers(self) -> list[dict[str, int | str]]:
+        if not self.survey_data:
             return []
-        return self.tasks.get(self.selected_project_id, [])
-
-    @rx.var
-    def completed_tasks_percentage(self) -> float:
-        if not self.selected_project_id:
-            return 0.0
-        tasks = self.selected_project_tasks
-        if not tasks:
-            return 0.0
-        completed_tasks = [task for task in tasks if task["status"] == "Completed"]
-        return len(completed_tasks) / len(tasks) * 100
-
-    @rx.var
-    def in_progress_tasks_percentage(self) -> float:
-        if not self.selected_project_id:
-            return 0.0
-        tasks = self.selected_project_tasks
-        if not tasks:
-            return 0.0
-        in_progress_tasks = [task for task in tasks if task["status"] == "In Progress"]
-        return len(in_progress_tasks) / len(tasks) * 100
-
-    @rx.var
-    def pending_tasks_percentage(self) -> float:
-        if not self.selected_project_id:
-            return 0.0
-        tasks = self.selected_project_tasks
-        if not tasks:
-            return 0.0
-        pending_tasks = [task for task in tasks if task["status"] == "Pending"]
-        return len(pending_tasks) / len(tasks) * 100
-
-    @rx.var
-    def project_task_counts(self) -> list[dict[str, int | str]]:
+        consumers = sum((1 for d in self.survey_data if d["has_consumed"]))
+        non_consumers = len(self.survey_data) - consumers
         return [
-            {"name": project["name"], "tasks": len(self.tasks.get(project["id"], []))}
-            for project in self.projects
+            {"name": "Consumers", "value": consumers},
+            {"name": "Non-consumers", "value": non_consumers},
         ]
+
+    @rx.var
+    def consumption_by_substance(self) -> list[dict[str, int | str]]:
+        if not self.survey_data:
+            return []
+        substance_counts = Counter()
+        for d in self.survey_data:
+            if d["has_consumed"]:
+                substance_counts.update(d["substances"])
+        return [
+            {"name": substance.capitalize(), "count": count}
+            for substance, count in substance_counts.items()
+        ]
+
+    @rx.var
+    def age_of_first_use_distribution(self) -> list[dict[str, int]]:
+        if not self.survey_data:
+            return []
+        ages = [
+            d["age_of_first_use"]
+            for d in self.survey_data
+            if d["age_of_first_use"] is not None
+        ]
+        age_counts = Counter(ages)
+        return [
+            {"age": age, "count": count} for age, count in sorted(age_counts.items())
+        ]
+
+    @rx.var
+    def risk_indicators(self) -> dict[str, str]:
+        if not self.survey_data:
+            return {"absenteeism": "0.0%", "conflicts": "0.0%", "risk_level": "Low"}
+        consumers = [d for d in self.survey_data if d["has_consumed"]]
+        if not consumers:
+            return {"absenteeism": "0.0%", "conflicts": "0.0%", "risk_level": "Low"}
+        absenteeism_count = sum((1 for d in consumers if d["absenteeism"]))
+        conflicts_count = sum((1 for d in consumers if d["conflicts"]))
+        total_consumers = len(consumers)
+        absenteeism_rate = absenteeism_count / total_consumers * 100
+        conflicts_rate = conflicts_count / total_consumers * 100
+        risk_score = (absenteeism_rate + conflicts_rate) / 2
+        if risk_score > 66:
+            risk_level = "High"
+        elif risk_score > 33:
+            risk_level = "Medium"
+        else:
+            risk_level = "Low"
+        return {
+            "absenteeism": f"{absenteeism_rate:.1f}%",
+            "conflicts": f"{conflicts_rate:.1f}%",
+            "risk_level": risk_level,
+        }

@@ -4,8 +4,7 @@ from typing import TypedDict, Optional
 
 class MemberDashboardState(rx.State):
     active_view: str = "analysis"
-    form_data: dict = {}
-    accepted_terms: bool = False
+    survey_data: dict = {}
     show_sidebar: bool = False
 
     @rx.event
@@ -18,9 +17,7 @@ class MemberDashboardState(rx.State):
         self.show_sidebar = not self.show_sidebar
 
     @rx.event
-    def handle_form_submit(self, form_data: dict):
-        self.accepted_terms = form_data.get("accepted_terms", False)
-        if not self.accepted_terms:
-            return rx.toast.error("You must accept the terms and privacy policy.")
-        self.form_data = form_data
-        return rx.toast.success("Form submitted successfully!")
+    def handle_survey_submit(self, form_data: dict):
+        self.survey_data = form_data
+        yield rx.toast.success("Encuesta enviada con éxito!")
+        self.active_view = "analysis"
