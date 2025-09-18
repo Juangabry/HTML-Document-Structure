@@ -49,5 +49,9 @@ def sidebar() -> rx.Component:
                 href="#",
             )
         ),
-        class_name="flex flex-col w-64 h-screen px-4 py-8 bg-white border-r border-gray-200 sticky top-0",
+        class_name=rx.cond(
+            MemberDashboardState.show_sidebar,
+            "fixed z-40 top-0 left-0 flex flex-col w-64 h-screen px-4 py-8 bg-white border-r border-gray-200 transition-transform duration-300 transform md:sticky md:translate-x-0",
+            "fixed z-40 top-0 left-0 flex flex-col w-64 h-screen px-4 py-8 bg-white border-r border-gray-200 transition-transform duration-300 transform -translate-x-full md:sticky md:translate-x-0",
+        ),
     )

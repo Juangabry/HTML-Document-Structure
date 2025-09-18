@@ -7,10 +7,10 @@ def header() -> rx.Component:
     return rx.el.header(
         rx.el.div(
             rx.el.a(
-                rx.icon("mountain", class_name="h-6 w-6 text-white"),
-                rx.el.span("Your Company", class_name="sr-only"),
-                href="#",
-                class_name="flex items-center gap-2",
+                rx.icon("brain-circuit", class_name="h-6 w-6 text-white"),
+                rx.el.span("Bateria psico", class_name="ml-2 font-bold text-lg"),
+                href="/",
+                class_name="flex items-center gap-2 text-white",
             ),
             rx.el.nav(
                 rx.el.a(
@@ -25,7 +25,7 @@ def header() -> rx.Component:
                 ),
                 rx.el.a(
                     "Tutorial",
-                    href="#",
+                    href="/tutorial",
                     class_name="text-sm font-medium text-white hover:underline underline-offset-4",
                 ),
                 rx.cond(
@@ -102,7 +102,7 @@ def header() -> rx.Component:
                 ),
                 rx.el.a(
                     "Tutorial",
-                    href="#",
+                    href="/tutorial",
                     class_name="block py-2 px-4 text-sm text-white hover:bg-blue-800",
                     on_click=HeaderState.toggle_menu,
                 ),

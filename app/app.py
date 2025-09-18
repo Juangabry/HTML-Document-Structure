@@ -4,13 +4,17 @@ from app.components.hero import hero
 from app.components.about import about
 from app.components.services import services
 from app.components.promotional_sections import promotional_sections
+from app.components.testimonials import testimonials
+from app.components.faq import faq
 from app.components.subscriptions import subscriptions
 from app.components.footer import footer
+from app.components.virtual_assistant import virtual_assistant
 from app.pages.sign_in import sign_in
 from app.pages.sign_up import sign_up
 from app.pages.payment import payment
 from app.pages.payment_confirmation import payment_confirmation
 from app.pages.member_space import member_space
+from app.pages.main_tutorial import main_tutorial
 from app.states.auth_state import AuthState
 
 
@@ -22,8 +26,11 @@ def index() -> rx.Component:
         about(),
         services(),
         promotional_sections(),
+        testimonials(),
+        faq(),
         subscriptions(),
         footer(),
+        virtual_assistant(),
         class_name="bg-gray-50 text-gray-900 font-['Inter']",
     )
 
@@ -42,6 +49,7 @@ app = rx.App(
 app.add_page(index, title="Landing Page")
 app.add_page(sign_in, route="/sign-in")
 app.add_page(sign_up, route="/sign-up")
+app.add_page(main_tutorial, route="/tutorial")
 app.add_page(payment, route="/payment", on_load=AuthState.check_session)
 app.add_page(
     payment_confirmation, route="/payment-confirmation", on_load=AuthState.check_session

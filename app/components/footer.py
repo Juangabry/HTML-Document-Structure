@@ -25,8 +25,10 @@ def footer() -> rx.Component:
             rx.el.div(
                 rx.el.div(
                     rx.el.a(
-                        rx.icon("mountain", class_name="h-8 w-8 text-white"),
-                        rx.el.span("Your Company", class_name="sr-only"),
+                        rx.icon("brain-circuit", class_name="h-8 w-8 text-white"),
+                        rx.el.span(
+                            "Bateria psico", class_name="ml-2 text-xl font-bold"
+                        ),
                         href="#",
                         class_name="flex items-center gap-2 mb-4",
                     ),
@@ -102,7 +104,7 @@ def footer() -> rx.Component:
             rx.el.div(class_name="border-t border-gray-700 my-8"),
             rx.el.div(
                 rx.el.p(
-                    "© 2024 Your Company, Inc. All rights reserved.",
+                    "© 2024 Bateria psico, Inc. All rights reserved.",
                     class_name="text-sm text-gray-400",
                 ),
                 rx.el.div(
