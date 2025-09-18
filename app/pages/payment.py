@@ -42,7 +42,7 @@ def payment_form() -> rx.Component:
             ),
             rx.el.button(
                 "Pay Now",
-                class_name="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors",
+                class_name="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-105 shadow-lg",
                 on_click=AuthState.subscribe,
             ),
         ),

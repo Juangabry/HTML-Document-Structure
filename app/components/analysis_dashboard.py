@@ -76,6 +76,65 @@ def render_project_row(project: Project) -> rx.Component:
     )
 
 
+def chart_selection() -> rx.Component:
+    return rx.el.div(
+        rx.el.label("Chart Type", class_name="text-sm font-medium text-gray-700 mr-2"),
+        rx.el.select(
+            rx.el.option("Bar Chart", value="bar"),
+            rx.el.option("Line Chart", value="line"),
+            rx.el.option("Area Chart", value="area"),
+            value=AnalysisState.chart_type,
+            on_change=AnalysisState.set_chart_type,
+            class_name="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm",
+        ),
+        class_name="flex items-center mb-4",
+    )
+
+
+def bar_chart_component() -> rx.Component:
+    return rx.recharts.bar_chart(
+        rx.recharts.cartesian_grid(stroke_dasharray="3 3"),
+        rx.recharts.graphing_tooltip(),
+        rx.recharts.x_axis(data_key="name"),
+        rx.recharts.y_axis(),
+        rx.recharts.legend(),
+        rx.recharts.bar(data_key="tasks", fill="#8884d8"),
+        data=AnalysisState.project_task_counts,
+        height=300,
+        class_name="w-full",
+    )
+
+
+def line_chart_component() -> rx.Component:
+    return rx.recharts.line_chart(
+        rx.recharts.cartesian_grid(stroke_dasharray="3 3"),
+        rx.recharts.graphing_tooltip(),
+        rx.recharts.x_axis(data_key="name"),
+        rx.recharts.y_axis(),
+        rx.recharts.legend(),
+        rx.recharts.line(data_key="tasks", stroke="#8884d8", type_="monotone"),
+        data=AnalysisState.project_task_counts,
+        height=300,
+        class_name="w-full",
+    )
+
+
+def area_chart_component() -> rx.Component:
+    return rx.recharts.area_chart(
+        rx.recharts.cartesian_grid(stroke_dasharray="3 3"),
+        rx.recharts.graphing_tooltip(),
+        rx.recharts.x_axis(data_key="name"),
+        rx.recharts.y_axis(),
+        rx.recharts.legend(),
+        rx.recharts.area(
+            data_key="tasks", stroke="#8884d8", fill="#8884d8", type_="monotone"
+        ),
+        data=AnalysisState.project_task_counts,
+        height=300,
+        class_name="w-full",
+    )
+
+
 def task_table() -> rx.Component:
     return rx.cond(
         AnalysisState.selected_project_id != None,
@@ -146,6 +205,17 @@ def task_table() -> rx.Component:
                     class_name="min-w-full divide-y divide-gray-200 shadow border-b border-gray-200 sm:rounded-lg",
                 ),
                 class_name="overflow-x-auto",
+            ),
+            rx.el.div(
+                chart_selection(),
+                rx.match(
+                    AnalysisState.chart_type,
+                    ("bar", bar_chart_component()),
+                    ("line", line_chart_component()),
+                    ("area", area_chart_component()),
+                    bar_chart_component(),
+                ),
+                class_name="w-full p-6 bg-white rounded-lg shadow-md mt-8",
             ),
             class_name="w-full p-6 bg-white rounded-lg shadow-md mt-8",
         ),

@@ -6,7 +6,7 @@ def promotional_sections() -> rx.Component:
         rx.el.section(
             rx.el.div(
                 rx.el.img(
-                    src="/placeholder.svg",
+                    src="/compelling_related_productivity.png",
                     class_name="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last",
                 ),
                 rx.el.div(
@@ -21,7 +21,7 @@ def promotional_sections() -> rx.Component:
                     rx.el.a(
                         "Learn More",
                         href="#services",
-                        class_name="inline-flex h-10 items-center justify-center rounded-md bg-blue-500 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-blue-600 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-700 disabled:pointer-events-none disabled:opacity-50",
+                        class_name="inline-flex h-12 items-center justify-center rounded-lg bg-blue-500 px-8 text-base font-semibold text-white shadow-lg transition-all duration-300 hover:bg-blue-600 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
                     ),
                     class_name="flex flex-col justify-center space-y-4",
                 ),
@@ -31,7 +31,7 @@ def promotional_sections() -> rx.Component:
         rx.el.section(
             rx.el.div(
                 rx.el.img(
-                    src="/placeholder.svg",
+                    src="/dynamic_vibrant_representing.png",
                     class_name="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full",
                 ),
                 rx.el.div(
@@ -46,7 +46,7 @@ def promotional_sections() -> rx.Component:
                     rx.el.a(
                         "View Pricing",
                         href="#subscriptions",
-                        class_name="inline-flex h-10 items-center justify-center rounded-md bg-blue-500 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-blue-600 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-700 disabled:pointer-events-none disabled:opacity-50",
+                        class_name="inline-flex h-12 items-center justify-center rounded-lg bg-blue-500 px-8 text-base font-semibold text-white shadow-lg transition-all duration-300 hover:bg-blue-600 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
                     ),
                     class_name="flex flex-col justify-center space-y-4",
                 ),

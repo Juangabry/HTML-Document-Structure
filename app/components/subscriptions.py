@@ -23,7 +23,7 @@ def subscription_card(tier: str, price: str, features: list[str]) -> rx.Componen
         rx.el.a(
             "Get Started",
             href="/payment",
-            class_name="mt-8 block w-full text-center bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600",
+            class_name="mt-8 block w-full text-center bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-105 shadow-lg",
         ),
         class_name="w-full max-w-sm p-8 bg-white rounded-lg shadow-md border border-gray-200",
     )

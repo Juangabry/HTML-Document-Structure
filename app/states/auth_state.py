@@ -56,9 +56,13 @@ class AuthState(GoogleAuthState):
     def subscribe(self):
         if self.in_session and self.current_user_email:
             self.users[self.current_user_email]["subscribed"] = True
-            return rx.redirect("/member-space")
+            return rx.redirect("/payment-confirmation")
         else:
             return rx.redirect("/sign-in")
+
+    @rx.event
+    def go_to_member_space(self):
+        return rx.redirect("/member-space")
 
     @rx.event
     def check_subscription(self):

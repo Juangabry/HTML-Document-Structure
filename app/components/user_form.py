@@ -16,39 +16,40 @@ def user_form() -> rx.Component:
             rx.el.div(
                 rx.el.div(
                     rx.el.label(
-                        "First Name", class_name="text-sm font-medium leading-none"
+                        "First Name", class_name="text-base font-medium leading-none"
                     ),
                     rx.el.input(
                         type="text",
                         name="first_name",
                         placeholder="John",
                         required=True,
-                        class_name="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+                        class_name="flex h-12 w-full rounded-lg border border-input bg-background px-4 py-3 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
                     ),
                     class_name="space-y-2",
                 ),
                 rx.el.div(
                     rx.el.label(
-                        "Last Name", class_name="text-sm font-medium leading-none"
+                        "Last Name", class_name="text-base font-medium leading-none"
                     ),
                     rx.el.input(
                         type="text",
                         name="last_name",
                         placeholder="Doe",
                         required=True,
-                        class_name="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+                        class_name="flex h-12 w-full rounded-lg border border-input bg-background px-4 py-3 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
                     ),
                     class_name="space-y-2",
                 ),
-                class_name="grid grid-cols-1 gap-4 md:grid-cols-2",
+                class_name="grid grid-cols-1 gap-6 md:grid-cols-2",
             ),
             rx.el.div(
-                rx.el.label("Message", class_name="text-sm font-medium leading-none"),
+                rx.el.label("Message", class_name="text-base font-medium leading-none"),
                 rx.el.textarea(
                     name="message",
                     placeholder="Your message here...",
                     required=True,
-                    class_name="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+                    rows=6,
+                    class_name="flex min-h-[120px] w-full rounded-lg border border-input bg-background px-4 py-3 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
                 ),
                 class_name="space-y-2",
             ),
@@ -58,23 +59,23 @@ def user_form() -> rx.Component:
                         type="checkbox",
                         name="accepted_terms",
                         default_checked=MemberDashboardState.accepted_terms,
-                        class_name="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600",
+                        class_name="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-600",
                     ),
                     rx.el.label(
                         "I accept the ",
                         rx.el.a(
                             "Terms of Service",
                             href="#",
-                            class_name="font-medium text-blue-600 hover:underline",
+                            class_name="font-semibold text-blue-600 hover:underline",
                         ),
                         " and ",
                         rx.el.a(
                             "Privacy Policy",
                             href="#",
-                            class_name="font-medium text-blue-600 hover:underline",
+                            class_name="font-semibold text-blue-600 hover:underline",
                         ),
                         ".",
-                        class_name="ml-2 block text-sm text-gray-900",
+                        class_name="ml-3 block text-base text-gray-900",
                     ),
                     class_name="flex items-center",
                 )
@@ -82,11 +83,11 @@ def user_form() -> rx.Component:
             rx.el.button(
                 "Submit",
                 type="submit",
-                class_name="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-blue-600 text-white hover:bg-blue-700 h-10 px-4 py-2 w-full md:w-auto",
+                class_name="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-base font-semibold ring-offset-background transition-transform transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-blue-600 text-white hover:bg-blue-700 h-12 px-8 py-3 w-full md:w-auto shadow-lg",
             ),
-            class_name="space-y-6",
+            class_name="space-y-8",
             on_submit=MemberDashboardState.handle_form_submit,
             reset_on_submit=True,
         ),
-        class_name="w-full max-w-4xl mx-auto p-4 sm:p-6 md:p-8 bg-white rounded-lg shadow-md border border-gray-200 mt-8",
+        class_name="w-full max-w-5xl mx-auto p-6 sm:p-8 md:p-10 bg-white rounded-xl shadow-lg border border-gray-200 mt-8",
     )

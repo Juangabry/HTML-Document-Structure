@@ -35,6 +35,7 @@ def sidebar() -> rx.Component:
             rx.el.ul(
                 sidebar_link("Analysis", "bar-chart-2", "analysis"),
                 sidebar_link("User Form", "file-text", "form"),
+                sidebar_link("Tutorial", "book-open", "tutorial"),
                 class_name="space-y-2 font-medium",
             ),
             class_name="flex-1",

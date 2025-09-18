@@ -114,6 +114,7 @@ class AnalysisState(rx.State):
         4: [],
     }
     selected_project_id: Optional[int] = None
+    chart_type: str = "bar"
 
     @rx.event
     def select_project(self, project_id: int):
@@ -121,6 +122,10 @@ class AnalysisState(rx.State):
             self.selected_project_id = None
         else:
             self.selected_project_id = project_id
+
+    @rx.event
+    def set_chart_type(self, chart_type: str):
+        self.chart_type = chart_type
 
     @rx.var
     def selected_project(self) -> Optional[Project]:
@@ -166,3 +171,10 @@ class AnalysisState(rx.State):
             return 0.0
         pending_tasks = [task for task in tasks if task["status"] == "Pending"]
         return len(pending_tasks) / len(tasks) * 100
+
+    @rx.var
+    def project_task_counts(self) -> list[dict[str, int | str]]:
+        return [
+            {"name": project["name"], "tasks": len(self.tasks.get(project["id"], []))}
+            for project in self.projects
+        ]
