@@ -1,0 +1,92 @@
+import reflex as rx
+from app.states.member_dashboard_state import MemberDashboardState
+
+
+def user_form() -> rx.Component:
+    return rx.el.div(
+        rx.el.h2(
+            "User Information Form",
+            class_name="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl md:text-5xl",
+        ),
+        rx.el.p(
+            "Please fill out the form below.",
+            class_name="mt-4 max-w-2xl text-lg text-gray-600",
+        ),
+        rx.el.form(
+            rx.el.div(
+                rx.el.div(
+                    rx.el.label(
+                        "First Name", class_name="text-sm font-medium leading-none"
+                    ),
+                    rx.el.input(
+                        type="text",
+                        name="first_name",
+                        placeholder="John",
+                        required=True,
+                        class_name="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+                    ),
+                    class_name="space-y-2",
+                ),
+                rx.el.div(
+                    rx.el.label(
+                        "Last Name", class_name="text-sm font-medium leading-none"
+                    ),
+                    rx.el.input(
+                        type="text",
+                        name="last_name",
+                        placeholder="Doe",
+                        required=True,
+                        class_name="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+                    ),
+                    class_name="space-y-2",
+                ),
+                class_name="grid grid-cols-1 gap-4 md:grid-cols-2",
+            ),
+            rx.el.div(
+                rx.el.label("Message", class_name="text-sm font-medium leading-none"),
+                rx.el.textarea(
+                    name="message",
+                    placeholder="Your message here...",
+                    required=True,
+                    class_name="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+                ),
+                class_name="space-y-2",
+            ),
+            rx.el.div(
+                rx.el.div(
+                    rx.el.input(
+                        type="checkbox",
+                        name="accepted_terms",
+                        default_checked=MemberDashboardState.accepted_terms,
+                        class_name="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600",
+                    ),
+                    rx.el.label(
+                        "I accept the ",
+                        rx.el.a(
+                            "Terms of Service",
+                            href="#",
+                            class_name="font-medium text-blue-600 hover:underline",
+                        ),
+                        " and ",
+                        rx.el.a(
+                            "Privacy Policy",
+                            href="#",
+                            class_name="font-medium text-blue-600 hover:underline",
+                        ),
+                        ".",
+                        class_name="ml-2 block text-sm text-gray-900",
+                    ),
+                    class_name="flex items-center",
+                )
+            ),
+            rx.el.button(
+                "Submit",
+                type="submit",
+                class_name="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-blue-600 text-white hover:bg-blue-700 h-10 px-4 py-2 w-full md:w-auto",
+            ),
+            class_name="space-y-6",
+            on_submit=MemberDashboardState.handle_form_submit,
+            reset_on_submit=True,
+        ),
+        class_name="w-full max-w-4xl mx-auto p-4 sm:p-6 md:p-8 bg-white rounded-lg shadow-md border border-gray-200 mt-8",
+    )
