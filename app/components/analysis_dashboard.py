@@ -83,13 +83,13 @@ def consumers_pie_chart() -> rx.Component:
                 name_key="name",
                 cx="50%",
                 cy="50%",
-                outer_radius=80,
+                outer_radius=120,
                 fill="#8884d8",
                 label=True,
             ),
             rx.recharts.legend(),
-            width=400,
-            height=300,
+            width="100%",
+            height=400,
         ),
         class_name="w-full p-6 bg-white rounded-lg shadow-md flex flex-col items-center",
     )
@@ -109,7 +109,8 @@ def substance_bar_chart() -> rx.Component:
             rx.recharts.legend(),
             rx.recharts.bar(data_key="count", fill="#82ca9d"),
             data=AnalysisState.consumption_by_substance,
-            height=300,
+            width="100%",
+            height=400,
         ),
         class_name="w-full p-6 bg-white rounded-lg shadow-md",
     )
@@ -128,9 +129,36 @@ def age_histogram() -> rx.Component:
             rx.recharts.y_axis(),
             rx.recharts.bar(data_key="count", fill="#ffc658"),
             data=AnalysisState.age_of_first_use_distribution,
-            height=300,
+            width="100%",
+            height=400,
         ),
         class_name="w-full p-6 bg-white rounded-lg shadow-md",
+    )
+
+
+def chart_selection() -> rx.Component:
+    return rx.el.div(
+        rx.el.h3(
+            "Select Charts to Display",
+            class_name="text-lg font-semibold text-gray-700 mb-3",
+        ),
+        rx.el.div(
+            rx.foreach(
+                AnalysisState.available_charts,
+                lambda chart: rx.el.label(
+                    rx.el.input(
+                        type="checkbox",
+                        checked=AnalysisState.selected_charts.contains(chart),
+                        on_change=lambda _: AnalysisState.toggle_chart(chart),
+                        class_name="mr-2 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600",
+                    ),
+                    chart.replace("_", " ").capitalize(),
+                    class_name="flex items-center text-base font-medium text-gray-800 cursor-pointer",
+                ),
+            ),
+            class_name="flex flex-wrap gap-x-6 gap-y-3",
+        ),
+        class_name="p-6 bg-white rounded-lg shadow-md mb-8",
     )
 
 
@@ -142,14 +170,27 @@ def analysis_dashboard() -> rx.Component:
                 class_name="text-4xl font-bold text-center text-gray-900 mb-10",
             ),
             risk_summary(),
+            rx.el.div(chart_selection(), class_name="mt-8"),
             rx.el.div(
-                consumers_pie_chart(),
-                substance_bar_chart(),
-                class_name="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8",
+                rx.cond(
+                    AnalysisState.selected_charts.contains("consumers_pie_chart"),
+                    consumers_pie_chart(),
+                    rx.fragment(),
+                ),
+                rx.cond(
+                    AnalysisState.selected_charts.contains("substance_bar_chart"),
+                    substance_bar_chart(),
+                    rx.fragment(),
+                ),
+                rx.cond(
+                    AnalysisState.selected_charts.contains("age_histogram"),
+                    age_histogram(),
+                    rx.fragment(),
+                ),
+                class_name="grid grid-cols-1 xl:grid-cols-2 gap-8 mt-8",
             ),
-            rx.el.div(age_histogram(), class_name="mt-8"),
             class_name="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12",
         ),
         class_name="min-h-screen bg-gray-50",
-        on_mount=AnalysisState.on_load,
+        on_mount=AnalysisState.on_load_if_needed,
     )

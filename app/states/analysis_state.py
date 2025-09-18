@@ -24,11 +24,19 @@ class SurveyResponse(TypedDict):
 
 class AnalysisState(rx.State):
     survey_data: list[SurveyResponse] = []
-    chart_type: str = "bar"
+    available_charts: list[str] = [
+        "consumers_pie_chart",
+        "substance_bar_chart",
+        "age_histogram",
+    ]
+    selected_charts: list[str] = [
+        "consumers_pie_chart",
+        "substance_bar_chart",
+        "age_histogram",
+    ]
+    data_loaded: bool = False
 
     def _generate_mock_data(self):
-        if self.survey_data:
-            return
         positions = ["Engineer", "Designer", "Manager", "Analyst", "HR"]
         genders = ["Male", "Female"]
         marital_statuses = ["Single", "Married", "Divorced"]
@@ -65,14 +73,49 @@ class AnalysisState(rx.State):
             }
             data.append(entry)
         self.survey_data = data
+        self.data_loaded = True
 
     @rx.event
-    def on_load(self):
-        self._generate_mock_data()
+    def on_load_if_needed(self):
+        if not self.data_loaded:
+            self._generate_mock_data()
 
     @rx.event
-    def set_chart_type(self, chart_type: str):
-        self.chart_type = chart_type
+    def update_data_from_form(self, form_data: dict):
+        substances = [
+            key.replace("substance_", "")
+            for key, value in form_data.items()
+            if key.startswith("substance_") and value
+        ]
+        has_consumed = form_data.get("has_consumed") == "sí"
+        new_entry = {
+            "id": len(self.survey_data) + 1,
+            "age": int(form_data.get("age", 0)),
+            "gender": form_data.get("gender", ""),
+            "marital_status": form_data.get("marital_status", ""),
+            "position": form_data.get("position", ""),
+            "seniority": int(form_data.get("seniority", 0)),
+            "has_consumed": has_consumed,
+            "substances": substances,
+            "age_of_first_use": int(form_data["age_of_first_use"])
+            if form_data.get("age_of_first_use")
+            else None,
+            "frequency": form_data.get("frequency"),
+            "consumed_at_work": form_data.get("consumed_at_work") == "sí",
+            "absenteeism": form_data.get("absenteeism") == "sí",
+            "conflicts": form_data.get("conflicts") == "sí",
+            "affects_performance": form_data.get("affects_performance") == "sí",
+            "willing_to_participate": form_data.get("willing_to_participate") == "sí",
+        }
+        self.survey_data = [new_entry]
+        self.data_loaded = True
+
+    @rx.event
+    def toggle_chart(self, chart_name: str):
+        if chart_name in self.selected_charts:
+            self.selected_charts.remove(chart_name)
+        else:
+            self.selected_charts.append(chart_name)
 
     @rx.var
     def consumers_vs_non_consumers(self) -> list[dict[str, int | str]]:
@@ -122,6 +165,8 @@ class AnalysisState(rx.State):
         absenteeism_count = sum((1 for d in consumers if d["absenteeism"]))
         conflicts_count = sum((1 for d in consumers if d["conflicts"]))
         total_consumers = len(consumers)
+        if total_consumers == 0:
+            return {"absenteeism": "0.0%", "conflicts": "0.0%", "risk_level": "Low"}
         absenteeism_rate = absenteeism_count / total_consumers * 100
         conflicts_rate = conflicts_count / total_consumers * 100
         risk_score = (absenteeism_rate + conflicts_rate) / 2

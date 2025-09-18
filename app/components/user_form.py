@@ -8,7 +8,9 @@ def form_section(title: str, *children) -> rx.Component:
             title,
             class_name="text-xl font-semibold text-gray-800 mb-4 border-b pb-2 w-full",
         ),
-        rx.el.div(*children, class_name="grid grid-cols-1 md:grid-cols-2 gap-6"),
+        rx.el.div(
+            *children, class_name="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6"
+        ),
         class_name="space-y-6",
     )
 
@@ -187,9 +189,9 @@ def user_form() -> rx.Component:
                 type="submit",
                 class_name="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-base font-semibold ring-offset-background transition-transform transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-blue-600 text-white hover:bg-blue-700 h-12 px-8 py-3 w-full md:w-auto shadow-lg mt-8",
             ),
-            class_name="space-y-12 mt-8",
+            class_name="space-y-16 mt-8",
             on_submit=MemberDashboardState.handle_survey_submit,
             reset_on_submit=True,
         ),
-        class_name="w-full max-w-5xl mx-auto p-6 sm:p-8 md:p-10 bg-white rounded-xl shadow-lg border border-gray-200 mt-8",
+        class_name="w-full max-w-5xl mx-auto p-8 sm:p-10 md:p-12 bg-white rounded-xl shadow-lg border border-gray-200 mt-8",
     )

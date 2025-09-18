@@ -4,7 +4,6 @@ from typing import TypedDict, Optional
 
 class MemberDashboardState(rx.State):
     active_view: str = "analysis"
-    survey_data: dict = {}
     show_sidebar: bool = False
 
     @rx.event
@@ -17,7 +16,12 @@ class MemberDashboardState(rx.State):
         self.show_sidebar = not self.show_sidebar
 
     @rx.event
-    def handle_survey_submit(self, form_data: dict):
-        self.survey_data = form_data
-        yield rx.toast.success("Encuesta enviada con éxito!")
+    async def handle_survey_submit(self, form_data: dict):
+        from app.states.analysis_state import AnalysisState
+
+        analysis_state = await self.get_state(AnalysisState)
+        analysis_state.update_data_from_form(form_data)
+        yield rx.toast.success(
+            "Encuesta enviada con éxito! Los análisis han sido actualizados."
+        )
         self.active_view = "analysis"
